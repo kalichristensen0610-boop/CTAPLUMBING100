@@ -44,6 +44,8 @@ npm run build
 
 Use `npm ci` as the install command for repeatable production deployments. `npm install` is also supported when the hosting interface does not accept a separate clean install command. Use `npm run build` as the build command and `npm run start` as the start command.
 
+If Hostinger reports pnpm after this migration, confirm the deployment is using the latest `main` branch, change the project package manager to npm, and redeploy after clearing the previous build cache. The root `.npmrc` explicitly enables required dependency install scripts, including the native Sharp setup used by Next.js.
+
 ## Docker production build
 
 ```text

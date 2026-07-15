@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "npm@11.18.0",
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

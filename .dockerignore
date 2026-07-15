@@ -5,7 +5,6 @@ node_modules
 npm-debug.log*
 .cache
 .npm
-.pnpm-store
 .hostinger
 deployment
 deploy
