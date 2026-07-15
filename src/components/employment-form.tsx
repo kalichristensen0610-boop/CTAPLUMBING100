@@ -31,11 +31,19 @@ export function EmploymentForm() {
     setSubmitting(true);
     try {
       const response = await fetch("/api/employment", { method: "POST", body: data });
-      const result = await response.json();
+      const responseText = await response.text();
+      let result: { message?: string; code?: string; requestId?: string };
+      try {
+        result = JSON.parse(responseText);
+      } catch {
+        result = { message: response.ok ? "The server returned an unreadable response." : `The application server returned an error (${response.status}). Please try again.` };
+      }
+      if (!response.ok) console.error("Employment form request failed", { status: response.status, code: result.code || "NON_JSON_RESPONSE", message: result.message, requestId: result.requestId });
       if (!response.ok) throw new Error(result.message || "We could not submit your application.");
-      setStatus({ type: "success", message: result.message });
+      setStatus({ type: "success", message: result.message || "Thank you. Your application has been submitted successfully." });
       formRef.current?.reset();
     } catch (error) {
+      console.error("Employment form submission error", { message: error instanceof Error ? error.message : "Unknown request error" });
       setStatus({ type: "error", message: error instanceof Error ? error.message : "Please try again or contact us directly." });
     } finally { setSubmitting(false); }
   }
