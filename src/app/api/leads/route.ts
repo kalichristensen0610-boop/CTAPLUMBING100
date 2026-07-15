@@ -9,6 +9,7 @@ const defaultOrigins = [
   "https://ctaplumbing100.com",
   "https://www.ctaplumbing100.com",
   "https://darkslategray-snake-394369.hostingersite.com",
+  "https://mediumaquamarine-toad-626861.hostingersite.com",
 ];
 
 function allowed(ip: string) {
