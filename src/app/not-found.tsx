@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+export default function NotFound(){return <section className="container grid min-h-[60vh] place-items-center py-20 text-center"><div><p className="eyebrow">404 error</p><h1 className="section-title">We couldn’t find that page.</h1><p className="section-copy">The link may have changed. Return home or explore our plumbing services.</p><div className="mt-8 flex justify-center gap-3"><Button asChild><Link href="/">Go Home</Link></Button><Button variant="outline" asChild><Link href="/services">View Services</Link></Button></div></div></section>}

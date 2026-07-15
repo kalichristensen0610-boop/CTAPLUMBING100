@@ -1,0 +1,4 @@
+import type { MetadataRoute } from "next";
+import { locations, services } from "@/lib/content";
+import { site } from "@/lib/site";
+export default function sitemap():MetadataRoute.Sitemap{const now=new Date();const staticRoutes=["","/about","/services","/service-areas","/emergency-plumbing","/employment","/contact","/sitemap","/privacy-policy","/terms-and-conditions"];return[...staticRoutes.map((route)=>({url:`${site.url}${route}`,lastModified:now,changeFrequency:route===""?"weekly" as const:"monthly" as const,priority:route===""?1:.8})),...services.filter((s)=>s.slug!=="emergency-plumbing").map((s)=>({url:`${site.url}/services/${s.slug}`,lastModified:now,changeFrequency:"monthly" as const,priority:.7})),...locations.map((l)=>({url:`${site.url}/service-areas/${l.slug}`,lastModified:now,changeFrequency:"monthly" as const,priority:l.slug==="nampa"?.85:.7}))]}
