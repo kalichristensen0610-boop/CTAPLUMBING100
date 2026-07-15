@@ -15,10 +15,16 @@ export function LeadForm({ emergency = false, compact = false }: { emergency?: b
     setStatus(null);
     try {
       const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "We could not send your request.");
+      const result = await response.json().catch(() => ({ message: "The server returned an unreadable response." }));
+      if (!response.ok) {
+        console.error("Contact form request failed", { status: response.status, code: result.code || "UNKNOWN", message: result.message, requestId: result.requestId });
+        throw new Error(result.message || "We could not send your request.");
+      }
       setStatus({ type: "success", message: result.message }); reset();
-    } catch (error) { setStatus({ type: "error", message: error instanceof Error ? error.message : "Please call us or try again." }); }
+    } catch (error) {
+      console.error("Contact form submission error", { message: error instanceof Error ? error.message : "Unknown request error" });
+      setStatus({ type: "error", message: error instanceof Error ? error.message : "Please call us or try again." });
+    }
   }
   const field = "mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-navy outline-none transition focus:border-copper focus:ring-2 focus:ring-copper/20";
   const label = "block text-sm font-bold text-navy";

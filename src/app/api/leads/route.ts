@@ -54,6 +54,11 @@ function safeSmtpError(error: unknown, password?: string, username?: string) {
 export async function POST(request: Request) {
   const requestId = randomUUID();
   const origin = request.headers.get("origin")?.replace(/\/$/, "");
+  console.info(`[leads:${requestId}] endpoint_received`, {
+    method: request.method,
+    origin: origin || "none",
+    contentType: request.headers.get("content-type") || "none",
+  });
   if (origin && !allowedOrigins().has(origin)) {
     console.warn(`[leads:${requestId}] origin_rejected`, { origin });
     return NextResponse.json({ success: false, code: "ORIGIN_REJECTED", message: "This request is not allowed.", requestId }, { status: 403 });
