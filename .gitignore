@@ -1,7 +1,42 @@
-node_modules
-.next
+# Dependencies
+node_modules/
+
+# Next.js and build output
+.next/
+out/
+dist/
+build/
+
+# Environment files and secrets
 .env
-.env.local
+.env.*
+!.env.example
+
+# Logs
 *.log
-.pnpm-store
-tsconfig.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Caches and generated files
+.cache/
+.npm/
+.pnpm-store/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Hosting and deployment artifacts
+.hostinger/
+.vercel/
+public_html/
+deployment/
+deploy/
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

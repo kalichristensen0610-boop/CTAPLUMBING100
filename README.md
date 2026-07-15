@@ -4,10 +4,10 @@ A conversion-focused Next.js website for CTA Plumbing 100, serving Nampa and Ida
 
 ## Local development
 
-1. Install Node.js 22 and enable Corepack: `corepack enable`.
-2. Install dependencies: `pnpm install`.
+1. Install Node.js 22, which includes npm.
+2. Install dependencies: `npm install`.
 3. Copy `.env.example` to `.env.local` and replace the placeholder public details.
-4. Start the site: `pnpm dev`.
+4. Start the site: `npm run dev`.
 5. Open `http://localhost:3000`.
 
 Without SMTP settings, valid form submissions return a safe development-only confirmation and are not retained or delivered.
@@ -35,10 +35,14 @@ In production, missing SMTP settings return an unavailable response and direct t
 ## Quality checks
 
 ```text
-pnpm typecheck
-pnpm lint
-pnpm build
+npm run typecheck
+npm run lint
+npm run build
 ```
+
+## Hostinger build settings
+
+Use `npm ci` as the install command for repeatable production deployments. `npm install` is also supported when the hosting interface does not accept a separate clean install command. Use `npm run build` as the build command and `npm run start` as the start command.
 
 ## Docker production build
 

@@ -1,14 +1,14 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 FROM node:22-alpine AS builder
 WORKDIR /app
 ENV DOCKER_BUILD=true
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN corepack enable && pnpm build
+RUN npm run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app

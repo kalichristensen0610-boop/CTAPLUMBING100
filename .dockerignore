@@ -3,3 +3,9 @@ node_modules
 .git
 .env*
 npm-debug.log*
+.cache
+.npm
+.pnpm-store
+.hostinger
+deployment
+deploy
