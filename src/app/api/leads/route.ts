@@ -31,10 +31,24 @@ function env(name: string) {
   return quoted ? value.slice(1, -1).trim() : value;
 }
 
-function allowedOrigins() {
+function configuredOrigins() {
   const configured = env("ALLOWED_ORIGINS")?.split(",").map((value) => value.trim()).filter(Boolean) ?? [];
   const siteUrl = env("NEXT_PUBLIC_SITE_URL");
   return new Set([...defaultOrigins, ...configured, ...(siteUrl ? [siteUrl] : [])].map((value) => value.replace(/\/$/, "")));
+}
+
+function isAllowedOrigin(request: Request, origin: string) {
+  if (configuredOrigins().has(origin)) return true;
+  try {
+    const originUrl = new URL(origin);
+    const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+    const requestHost = forwardedHost || request.headers.get("host")?.trim();
+    // Hostinger preview names can change. Accept only a browser origin matching
+    // the host that received this request; unrelated cross-origin sites remain blocked.
+    return Boolean(requestHost && originUrl.host.toLowerCase() === requestHost.toLowerCase());
+  } catch {
+    return false;
+  }
 }
 
 function safeSmtpError(error: unknown, password?: string, username?: string) {
@@ -60,7 +74,7 @@ export async function POST(request: Request) {
     origin: origin || "none",
     contentType: request.headers.get("content-type") || "none",
   });
-  if (origin && !allowedOrigins().has(origin)) {
+  if (origin && !isAllowedOrigin(request, origin)) {
     console.warn(`[leads:${requestId}] origin_rejected`, { origin });
     return NextResponse.json({ success: false, code: "ORIGIN_REJECTED", message: "This request is not allowed.", requestId }, { status: 403 });
   }
